@@ -1,11 +1,11 @@
 {
-  "geradoEm": "2026-11-16T20:26:10.843Z",
+  "geradoEm": "2026-11-16T20:35:26.881Z",
   "fontes": [
     {
       "id": "deputados",
       "nome": "Deputados da legislatura 2023–2026 (site da CLDF)",
       "url": "https://www.cl.df.gov.br/deputados-2023-2026",
-      "coletadoEm": "2026-11-16T20:26:10.843Z",
+      "coletadoEm": "2026-11-16T20:35:26.881Z",
       "registros": 24,
       "ok": true
     },
@@ -13,7 +13,7 @@
       "id": "proposicoes",
       "nome": "Proposições (sistema PLe da CLDF)",
       "url": "https://ple.cl.df.gov.br/",
-      "coletadoEm": "2026-11-16T20:26:10.843Z",
+      "coletadoEm": "2026-11-16T20:35:26.881Z",
       "registros": 19910,
       "ok": true
     },
@@ -21,7 +21,7 @@
       "id": "verba",
       "nome": "Verbas indenizatórias (dados abertos da CLDF)",
       "url": "https://dados.cl.df.gov.br/dataset/verbas-indenizatorias",
-      "coletadoEm": "2026-11-16T20:26:10.843Z",
+      "coletadoEm": "2026-11-16T20:35:26.881Z",
       "registros": 3139,
       "ok": true,
       "rejeitados": 17
@@ -30,7 +30,7 @@
       "id": "comissoes",
       "nome": "Comissões permanentes (site da CLDF)",
       "url": "https://www.cl.df.gov.br/comissoes-permanentes",
-      "coletadoEm": "2026-11-16T20:26:10.843Z",
+      "coletadoEm": "2026-11-16T20:35:26.881Z",
       "registros": 15,
       "ok": true
     },
@@ -38,8 +38,8 @@
       "id": "frentes",
       "nome": "Frentes parlamentares (site da CLDF)",
       "url": "https://www.cl.df.gov.br/frentes-parlamentares",
-      "coletadoEm": "2026-11-16T20:26:10.843Z",
-      "registros": 155,
+      "coletadoEm": "2026-11-16T20:35:26.881Z",
+      "registros": 154,
       "ok": true
     }
   ]

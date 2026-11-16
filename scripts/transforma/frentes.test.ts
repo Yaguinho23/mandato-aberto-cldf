@@ -37,6 +37,12 @@ describe("transformarFrentes", () => {
     expect(f.naoReconhecidos).toEqual(["Fulano de Tal"]);
     expect(f.signatarios).not.toContain("iolando");
   });
+  it("linha repetida na fonte vira uma frente só (ids únicos)", () => {
+    const linha = /<tr>\s*<td><a href[\s\S]*?<\/tr>/.exec(html)![0];
+    const repetida = transformarFrentes(html.replace(linha, linha + linha), deputados, URL);
+    expect(repetida).toHaveLength(4);
+    expect(new Set(repetida.map((f) => f.id)).size).toBe(repetida.length);
+  });
   it("tabela ausente dá erro claro", () => {
     expect(() => transformarFrentes("<html></html>", deputados, URL)).toThrow(/tabela/i);
   });

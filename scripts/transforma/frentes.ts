@@ -39,10 +39,15 @@ export function transformarFrentes(html: string, deputados: DeputadoComAliases[]
       else if (slug !== autorSlug && !signatarios.includes(slug)) signatarios.push(slug);
     }
 
+    const nome = texto(celulas[1]);
+    let id = requerimento.replace("/", "-");
+    if (frentes.some((f) => f.id === id && f.nome === nome)) continue; // a fonte repete algumas linhas idênticas
+    // Mesmo requerimento com frentes diferentes: ids distintos, nada é descartado.
+    for (let n = 2; frentes.some((f) => f.id === id); n++) id = `${requerimento.replace("/", "-")}-${n}`;
     frentes.push({
-      id: requerimento.replace("/", "-"),
+      id,
       requerimento,
-      nome: texto(celulas[1]),
+      nome,
       autorSlug,
       signatarios,
       naoReconhecidos,
