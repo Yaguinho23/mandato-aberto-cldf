@@ -1,11 +1,11 @@
 {
-  "geradoEm": "2026-11-16T20:35:26.881Z",
+  "geradoEm": "2026-11-16T22:37:09.468Z",
   "fontes": [
     {
       "id": "deputados",
       "nome": "Deputados da legislatura 2023–2026 (site da CLDF)",
       "url": "https://www.cl.df.gov.br/deputados-2023-2026",
-      "coletadoEm": "2026-11-16T20:35:26.881Z",
+      "coletadoEm": "2026-11-16T22:37:09.468Z",
       "registros": 24,
       "ok": true
     },
@@ -15,7 +15,8 @@
       "url": "https://ple.cl.df.gov.br/",
       "coletadoEm": "2026-11-16T20:35:26.881Z",
       "registros": 19910,
-      "ok": true
+      "ok": false,
+      "erro": "Falha de rede em https://ple.cl.df.gov.br/pleservico/api/public/proposicao/filter?page=0&size=1000&sort=id,asc: fetch failed"
     },
     {
       "id": "verba",
@@ -23,7 +24,8 @@
       "url": "https://dados.cl.df.gov.br/dataset/verbas-indenizatorias",
       "coletadoEm": "2026-11-16T20:35:26.881Z",
       "registros": 3139,
-      "ok": true,
+      "ok": false,
+      "erro": "Falha de rede em https://dados.cl.df.gov.br/api/3/action/package_show?id=verbas-indenizatorias: fetch failed",
       "rejeitados": 17
     },
     {
@@ -32,7 +34,8 @@
       "url": "https://www.cl.df.gov.br/comissoes-permanentes",
       "coletadoEm": "2026-11-16T20:35:26.881Z",
       "registros": 15,
-      "ok": true
+      "ok": false,
+      "erro": "Falha de rede em https://www.cl.df.gov.br/comissoes-permanentes: fetch failed"
     },
     {
       "id": "frentes",
@@ -40,7 +43,8 @@
       "url": "https://www.cl.df.gov.br/frentes-parlamentares",
       "coletadoEm": "2026-11-16T20:35:26.881Z",
       "registros": 154,
-      "ok": true
+      "ok": false,
+      "erro": "Falha de rede em https://www.cl.df.gov.br/frentes-parlamentares: fetch failed"
     }
   ]
 }
