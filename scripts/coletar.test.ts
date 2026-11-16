@@ -2,7 +2,7 @@ import { mkdtemp, readFile, readdir, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import type { DeputadoComAliases, DespesaVerba, Metadados, Proposicao } from "../lib/types";
+import type { Comissao, DeputadoComAliases, DespesaVerba, Frente, Metadados, Proposicao } from "../lib/types";
 import { executarColeta, type Coletores } from "./coletar";
 
 const dep = (slug: string, nome: string): DeputadoComAliases => ({
@@ -16,12 +16,23 @@ const desp = (centavos: number, mes: number | null = 3): DespesaVerba => ({
   deputadoSlug: "fulano", ano: 2026, mes, categoria: "Combustível", fornecedor: "Posto", valorCentavos: centavos, fonteUrl: "https://dados.cl.df.gov.br/x.csv", legislatura: "2023-2026",
 });
 
+const comissao = (sigla: string): Comissao => ({
+  id: sigla.toLowerCase(), sigla, nome: "Comissão " + sigla, vigenteDesde: "2025-01-06", membros: [{ deputadoSlug: "fulano", papel: "Presidente", suplenteSlug: null }],
+  fonteUrl: "https://www.cl.df.gov.br/comissoes-permanentes", legislatura: "2023-2026",
+});
+const frente = (req: string): Frente => ({
+  id: req.replace("/", "-"), requerimento: req, nome: "Frente " + req, autorSlug: "fulano", signatarios: ["zeca"], naoReconhecidos: [],
+  urlRequerimento: null, fonteUrl: "https://www.cl.df.gov.br/frentes-parlamentares", legislatura: "2023-2026",
+});
+
 const DEPS = [dep("zeca", "Zeca"), dep("fulano", "Fulano")];
 function coletores(parcial: Partial<Coletores> = {}): Coletores {
   return {
     deputados: async () => DEPS,
     proposicoes: async () => [prop(3), prop(1), prop(2)],
     verba: async () => ({ despesas: [desp(200), desp(100)], rejeitadas: [{ arquivo: "https://dados.cl.df.gov.br/x.csv", linha: 9, motivo: "Linha sem valor" }] }),
+    comissoes: async () => [comissao("CCJ"), comissao("CAS")],
+    frentes: async () => [frente("10/2024"), frente("02/2023")],
     ...parcial,
   };
 }
@@ -44,12 +55,14 @@ const fonte = (m: Metadados, id: string) => m.fontes.find((f) => f.id === id)!;
 describe("executarColeta: tudo certo", () => {
   it("grava os 4 arquivos, todas as fontes ok e geradoEm = agora()", async () => {
     const meta = await executarColeta({ coletores: coletores(), dirSaida: dir, agora: () => DIA1 });
-    expect((await readdir(dir)).sort()).toEqual(["deputados.json", "metadados.json", "proposicoes.json", "verba.json"]);
+    expect((await readdir(dir)).sort()).toEqual(["comissoes.json", "deputados.json", "frentes.json", "metadados.json", "proposicoes.json", "verba.json"]);
     expect(meta.geradoEm).toBe(DIA1.toISOString());
     expect(meta.fontes.map((f) => [f.id, f.ok, f.registros, f.coletadoEm])).toEqual([
       ["deputados", true, 2, DIA1.toISOString()],
       ["proposicoes", true, 3, DIA1.toISOString()],
       ["verba", true, 2, DIA1.toISOString()],
+      ["comissoes", true, 2, DIA1.toISOString()],
+      ["frentes", true, 2, DIA1.toISOString()],
     ]);
     expect(await lerJson<Metadados>("metadados.json")).toEqual(meta);
     for (const f of meta.fontes) expect(f.url).toMatch(/^https:\/\//);
@@ -61,6 +74,8 @@ describe("executarColeta: tudo certo", () => {
     expect((await lerJson<Proposicao[]>("proposicoes.json")).map((p) => p.id)).toEqual(["1", "2", "3"]);
     expect((await lerJson<DespesaVerba[]>("verba.json")).map((d) => d.valorCentavos)).toEqual([100, 200]);
     expect((await lerJson<{ nome: string }[]>("deputados.json")).map((d) => d.nome)).toEqual(["Fulano", "Zeca"]);
+    expect((await lerJson<Frente[]>("frentes.json")).map((f) => f.id)).toEqual(["02-2023", "10-2024"]);
+    expect((await lerJson<Comissao[]>("comissoes.json")).map((c) => c.sigla)).toEqual(["CAS", "CCJ"]);
     expect(primeira.split("\n").length).toBe(3 + 3); // "[", 3 registros, "]", linha final
 
     // mesma coleta em outra ordem → mesmo arquivo, byte a byte
@@ -151,7 +166,7 @@ describe("executarColeta: falha em uma fonte", () => {
       dirSaida: dir,
       agora: () => DIA1,
     });
-    expect((await readdir(dir)).sort()).toEqual(["deputados.json", "metadados.json", "proposicoes.json"]);
+    expect((await readdir(dir)).sort()).toEqual(["comissoes.json", "deputados.json", "frentes.json", "metadados.json", "proposicoes.json"]);
     expect(fonte(meta, "verba")).toMatchObject({ ok: false, registros: 0, erro: "fora do ar" });
   });
 

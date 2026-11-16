@@ -13,6 +13,15 @@ describe("glossário", () => {
   });
 });
 
+describe("verbetes de comissões e frentes", () => {
+  it("explicam o que são, em linguagem simples, com a regra do terço para as frentes", () => {
+    expect(GLOSSARIO["comissao"].explicacao).toMatch(/parecer/);
+    expect(GLOSSARIO["comissao"].explicacao).toMatch(/cinco deputados/);
+    expect(GLOSSARIO["frente-parlamentar"].explicacao).toMatch(/um terço/);
+    expect(GLOSSARIO["frente-parlamentar"].explicacao).toMatch(/não vota/i);
+  });
+});
+
 describe("paginar", () => {
   const itens = Array.from({ length: 120 }, (_, i) => i);
   it("pagina de 50 em 50", () => {

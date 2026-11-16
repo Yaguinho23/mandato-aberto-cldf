@@ -158,3 +158,9 @@ Primeira coleta real, 2023 a 2026: **19.910 proposições** (2023: 6.903; 2024: 
 Por tipo: IND 11.237, RQ 3.130, PL 2.527, MO 2.213, PDL 505, PLC 117, PR 92, OUTRO 89.
 
 **Sem autor reconhecido: 647 (3,2%)**, abaixo do limite de 15% do plano. São autores que não são deputados da legislatura: Poder Executivo (455), comissões, Mesa Diretora (34), Defensoria Pública (14), Tribunal de Contas (13), uma Sugestão Legislativa, um registro sem autoria e um de "Deputado Rafael Prudente", que não está entre os 24 em exercício. Nenhum alias precisou ser acrescentado.
+
+## Comissões e frentes parlamentares
+
+- **Comissões permanentes** (`https://www.cl.df.gov.br/comissoes-permanentes`): a página embute a lista completa de composições em um literal JavaScript (`var composicoesFlat=[...]`, chaves sem aspas, escapes `\xNN`). O coletor lê esse literal sem executá-lo. Composição atual = registros sem `dataFim`. Cada composição tem 5 membros (Presidente, Vice-Presidente, Membro) com suplente. Há registros históricos (`CES`, `CESC`, `CDDHCEDP`, `CPDM`) com data de fim; são ignorados.
+- **Comissões temporárias**: a página não traz composição legível; fora da v1.
+- **Frentes parlamentares** (`https://www.cl.df.gov.br/frentes-parlamentares`): tabela HTML (155 frentes em 16/11/2026) com requerimento (link do PLe), nome, autor (1º signatário) e signatários separados por `<br>`. Os nomes vêm em grafias variadas (`João Hermeto`, `Paulo Belmonte`, `João Cardoso Professor Auditor`, `Roosevelt`, `Jorge Viana`); estas foram adicionadas como aliases em `data/curado/deputados.json`. Duas entradas continuam sem correspondência exata (`Ricardo Vale e Gabriel Magno`, `Doutora Jorge Vianna`) e aparecem como texto original na página, sem adivinhar.

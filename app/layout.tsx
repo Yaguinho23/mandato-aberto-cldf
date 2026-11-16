@@ -35,6 +35,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
               <p className="font-semibold">Navegação</p>
               <ul className="mt-1 space-y-1">
                 <li><Link className="inline-block py-1 underline" href="/proposicoes">Proposições</Link></li>
+                <li><Link className="inline-block py-1 underline" href="/comissoes-e-frentes">Comissões e frentes</Link></li>
                 <li><Link className="inline-block py-1 underline" href="/comparar">Comparar</Link></li>
                 <li><Link className="inline-block py-1 underline" href="/dados">Sobre os dados</Link></li>
                 <li><Link className="inline-block py-1 underline" href="/sobre">Sobre o projeto</Link></li>

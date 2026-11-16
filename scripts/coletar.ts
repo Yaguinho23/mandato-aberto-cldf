@@ -1,9 +1,11 @@
 import { mkdir, readFile, rename, rm, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import type { z } from "zod";
-import { DeputadoSchema, DespesaVerbaSchema, MetadadosSchema, ProposicaoSchema } from "../lib/schemas";
-import type { Deputado, DeputadoComAliases, DespesaVerba, FonteMeta, IdFonte, Metadados, Proposicao } from "../lib/types";
+import { ComissaoSchema, DeputadoSchema, DespesaVerbaSchema, FrenteSchema, MetadadosSchema, ProposicaoSchema } from "../lib/schemas";
+import type { Comissao, Deputado, DeputadoComAliases, DespesaVerba, FonteMeta, Frente, IdFonte, Metadados, Proposicao } from "../lib/types";
 import { carregarDeputados } from "./coleta/deputados";
+import { coletarComissoes, URL_COMISSOES } from "./coleta/comissoes";
+import { coletarFrentes, URL_FRENTES } from "./coleta/frentes";
 import { coletarProposicoes, URL_PUBLICA_PLE } from "./coleta/proposicoes";
 import { coletarVerba, URL_PUBLICA_VERBA } from "./coleta/verba";
 
@@ -11,12 +13,16 @@ export interface Coletores {
   deputados: () => Promise<DeputadoComAliases[]>;
   proposicoes: (deputados: DeputadoComAliases[]) => Promise<Proposicao[]>;
   verba: (deputados: DeputadoComAliases[]) => Promise<{ despesas: DespesaVerba[]; rejeitadas: unknown[] }>;
+  comissoes: (deputados: DeputadoComAliases[]) => Promise<Comissao[]>;
+  frentes: (deputados: DeputadoComAliases[]) => Promise<Frente[]>;
 }
 
 const FONTES: Record<IdFonte, { nome: string; url: string; arquivo: string }> = {
   deputados: { nome: "Deputados da legislatura 2023–2026 (site da CLDF)", url: "https://www.cl.df.gov.br/deputados-2023-2026", arquivo: "deputados.json" },
   proposicoes: { nome: "Proposições (sistema PLe da CLDF)", url: URL_PUBLICA_PLE, arquivo: "proposicoes.json" },
   verba: { nome: "Verbas indenizatórias (dados abertos da CLDF)", url: URL_PUBLICA_VERBA, arquivo: "verba.json" },
+  comissoes: { nome: "Comissões permanentes (site da CLDF)", url: URL_COMISSOES, arquivo: "comissoes.json" },
+  frentes: { nome: "Frentes parlamentares (site da CLDF)", url: URL_FRENTES, arquivo: "frentes.json" },
 };
 
 /** Queda maior que esta, em relação à última coleta boa, é tratada como falha da fonte. */
@@ -129,6 +135,14 @@ export async function executarColeta(deps: { coletores: Coletores; dirSaida: str
       const { despesas, rejeitadas } = await coletores.verba(exigirDeputados());
       return { itens: validar(despesas, DespesaVerbaSchema, "verba").sort(ordenarVerba), rejeitados: rejeitadas.length };
     }),
+    await fonte("comissoes", async () => {
+      const itens = validar(await coletores.comissoes(exigirDeputados()), ComissaoSchema, "comissões");
+      return { itens: itens.sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR")) };
+    }),
+    await fonte("frentes", async () => {
+      const itens = validar(await coletores.frentes(exigirDeputados()), FrenteSchema, "frentes");
+      return { itens: itens.sort((a, b) => a.id.split("-")[1].localeCompare(b.id.split("-")[1]) || Number(a.id.split("-")[0]) - Number(b.id.split("-")[0])) };
+    }),
   ];
 
   const metadados: Metadados = { geradoEm: agora, fontes };
@@ -139,7 +153,7 @@ export async function executarColeta(deps: { coletores: Coletores; dirSaida: str
 // `npm run coletar`: sai com código 1 só se todas as fontes falharem.
 async function principal(): Promise<void> {
   const metadados = await executarColeta({
-    coletores: { deputados: () => carregarDeputados(), proposicoes: (d) => coletarProposicoes(d), verba: (d) => coletarVerba(d) },
+    coletores: { deputados: () => carregarDeputados(), proposicoes: (d) => coletarProposicoes(d), verba: (d) => coletarVerba(d), comissoes: (d) => coletarComissoes(d), frentes: (d) => coletarFrentes(d) },
     dirSaida: join(process.cwd(), "data"),
     agora: () => new Date(),
   });

@@ -13,6 +13,16 @@ export const GLOSSARIO: Record<string, { termo: string; explicacao: string }> = 
     termo: "verba indenizatória",
     explicacao: "Dinheiro que a Câmara devolve ao deputado por despesas do gabinete, como aluguel, combustível e consultorias, depois que ele comprova o gasto.",
   },
+  comissao: {
+    termo: "comissão",
+    explicacao:
+      "Comissões são pequenos grupos de deputados que estudam cada proposta antes de ela ir à votação de todos no plenário. Cada comissão cuida de um assunto, como saúde, educação ou segurança, e emite um parecer, que é a opinião técnica sobre a proposta. Elas também fiscalizam o governo e fazem audiências públicas para ouvir a população. As comissões permanentes têm cinco deputados titulares, com seus suplentes, e a composição é renovada a cada dois anos.",
+  },
+  "frente-parlamentar": {
+    termo: "frente parlamentar",
+    explicacao:
+      "Frente parlamentar é um grupo de deputados de partidos diferentes que se une em torno de um tema, como turismo, tecnologia ou combate ao câncer. Para existir, precisa da assinatura de pelo menos um terço dos deputados distritais. A frente não vota nem aprova leis: serve para discutir o assunto, ouvir a sociedade e propor melhorias na legislação.",
+  },
   ementa: { termo: "ementa", explicacao: "Resumo oficial, de uma frase, do que a proposição trata." },
 };
 

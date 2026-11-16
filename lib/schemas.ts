@@ -47,7 +47,7 @@ export const DespesaVerbaSchema = z.object({
 });
 
 export const FonteMetaSchema = z.object({
-  id: z.enum(["deputados", "proposicoes", "verba"]),
+  id: z.enum(["deputados", "proposicoes", "verba", "comissoes", "frentes"]),
   nome: z.string().min(1),
   url: UrlSchema,
   coletadoEm: z.string().min(1),
@@ -60,4 +60,26 @@ export const FonteMetaSchema = z.object({
 export const MetadadosSchema = z.object({
   geradoEm: z.string().min(1),
   fontes: z.array(FonteMetaSchema),
+});
+
+export const ComissaoSchema = z.object({
+  id: z.string().min(1),
+  sigla: z.string().min(1),
+  nome: z.string().min(1),
+  vigenteDesde: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  membros: z.array(z.object({ deputadoSlug: z.string().min(1), papel: z.enum(["Presidente", "Vice-Presidente", "Membro"]), suplenteSlug: z.string().nullable() })).min(1),
+  fonteUrl: z.string().url(),
+  legislatura: z.literal("2023-2026"),
+});
+
+export const FrenteSchema = z.object({
+  id: z.string().min(1),
+  requerimento: z.string().min(1),
+  nome: z.string().min(1),
+  autorSlug: z.string().nullable(),
+  signatarios: z.array(z.string().min(1)),
+  naoReconhecidos: z.array(z.string()),
+  urlRequerimento: z.string().url().nullable(),
+  fonteUrl: z.string().url(),
+  legislatura: z.literal("2023-2026"),
 });

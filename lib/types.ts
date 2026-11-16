@@ -46,7 +46,39 @@ export interface DespesaVerba {
   legislatura: Legislatura;
 }
 
-export type IdFonte = "deputados" | "proposicoes" | "verba";
+export type PapelComissao = "Presidente" | "Vice-Presidente" | "Membro";
+
+export interface MembroComissao {
+  deputadoSlug: string;
+  papel: PapelComissao;
+  /** Suplente do membro, quando a fonte informa e o nome é reconhecido. */
+  suplenteSlug: string | null;
+}
+
+export interface Comissao {
+  id: string; // sigla em minúsculas
+  sigla: string;
+  nome: string;
+  vigenteDesde: string; // "AAAA-MM-DD"
+  membros: MembroComissao[];
+  fonteUrl: string;
+  legislatura: Legislatura;
+}
+
+export interface Frente {
+  id: string; // "02-2023"
+  requerimento: string; // "02/2023"
+  nome: string;
+  autorSlug: string | null;
+  signatarios: string[]; // slugs, sem o autor
+  /** Nomes da fonte que não casaram exatamente com nenhum deputado. */
+  naoReconhecidos: string[];
+  urlRequerimento: string | null;
+  fonteUrl: string;
+  legislatura: Legislatura;
+}
+
+export type IdFonte = "deputados" | "proposicoes" | "verba" | "comissoes" | "frentes";
 
 export interface FonteMeta {
   id: IdFonte;

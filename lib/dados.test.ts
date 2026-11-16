@@ -117,3 +117,36 @@ describe("camada de dados", () => {
     expect(dados.obterMetadados().geradoEm).toBe("2026-11-16T00:00:00.000Z");
   });
 });
+
+describe("comissões e frentes", () => {
+  const c = criarDados({
+    deputados: ["fulano", "zeca", "ana"].map((s) => dep(s, s)),
+    proposicoes: [],
+    verba: [],
+    metadados: { geradoEm: "2026-11-16T00:00:00.000Z", fontes: [] },
+    comissoes: [
+      { id: "ccj", sigla: "CCJ", nome: "Comissão de Constituição e Justiça", vigenteDesde: "2025-01-06", fonteUrl: "https://x.gov.br/c", legislatura: "2023-2026",
+        membros: [{ deputadoSlug: "zeca", papel: "Presidente", suplenteSlug: "ana" }, { deputadoSlug: "fulano", papel: "Membro", suplenteSlug: null }] },
+      { id: "cas", sigla: "CAS", nome: "Comissão de Assuntos Sociais", vigenteDesde: "2025-01-06", fonteUrl: "https://x.gov.br/c", legislatura: "2023-2026",
+        membros: [{ deputadoSlug: "ana", papel: "Vice-Presidente", suplenteSlug: "fulano" }] },
+    ],
+    frentes: [
+      { id: "02-2023", requerimento: "02/2023", nome: "Frente de Turismo", autorSlug: "fulano", signatarios: ["zeca"], naoReconhecidos: [], urlRequerimento: null, fonteUrl: "https://x.gov.br/f", legislatura: "2023-2026" },
+      { id: "03-2023", requerimento: "03/2023", nome: "Frente de Games", autorSlug: "zeca", signatarios: ["ana"], naoReconhecidos: [], urlRequerimento: null, fonteUrl: "https://x.gov.br/f", legislatura: "2023-2026" },
+    ],
+  });
+
+  it("lista comissões e frentes em ordem alfabética do nome", () => {
+    expect(c.listarComissoes().map((x) => x.sigla)).toEqual(["CAS", "CCJ"]);
+    expect(c.listarFrentes().map((x) => x.id)).toEqual(["03-2023", "02-2023"]); // Games antes de Turismo
+  });
+  it("comissoesDe devolve o papel do deputado, titular ou suplente", () => {
+    expect(c.comissoesDe("zeca").map((x) => [x.comissao.sigla, x.papel, x.suplente])).toEqual([["CCJ", "Presidente", false]]);
+    expect(c.comissoesDe("ana").map((x) => [x.comissao.sigla, x.papel, x.suplente]).sort()).toEqual([["CAS", "Vice-Presidente", false], ["CCJ", "Suplente", true]]);
+    expect(c.comissoesDe("ninguem")).toEqual([]);
+  });
+  it("frentesDe devolve autor ou signatário", () => {
+    expect(c.frentesDe("fulano").map((x) => [x.frente.id, x.papel])).toEqual([["02-2023", "Autor"]]);
+    expect(c.frentesDe("zeca").map((x) => [x.frente.id, x.papel]).sort()).toEqual([["02-2023", "Signatário"], ["03-2023", "Autor"]]);
+  });
+});

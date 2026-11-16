@@ -42,3 +42,5 @@ next-env.d.ts
 
 # workspace do executor de planos
 .superpowers/
+
+.claude/

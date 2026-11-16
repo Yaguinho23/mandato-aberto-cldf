@@ -48,6 +48,7 @@ export default function PaginaDados() {
         <ul className="list-disc space-y-1 pl-5">
           <li>Presença em sessões: a CLDF publica apenas em PDF, sem dados abertos que possamos ler com segurança.</li>
           <li>Votações nominais: também publicadas apenas em PDF.</li>
+          <li>Comissões temporárias: a página da CLDF não traz a composição em formato que possamos ler com segurança; mostramos só as comissões permanentes.</li>
           <li>Emendas: não confirmamos uma fonte aberta com autoria por deputado.</li>
         </ul>
       </section>

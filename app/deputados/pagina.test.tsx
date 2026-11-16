@@ -10,6 +10,8 @@ const meta: Metadados = {
 };
 const porTipo = { PL: 0, PLC: 0, PDL: 0, PR: 0, IND: 0, MO: 0, RQ: 0, OUTRO: 0 };
 let verba: unknown;
+let comissoesDoDeputado: unknown[] = [];
+let frentesDoDeputado: unknown[] = [];
 let porTema: { tema: string; quantidade: number }[] = [];
 
 vi.mock("next/navigation", () => ({
@@ -21,6 +23,8 @@ vi.mock("@/lib/dados", () => ({
   listarDeputados: () => [fulano],
   obterDeputado: (s: string) => (s === "fulano" ? fulano : undefined),
   proposicoesDe: () => [],
+  comissoesDe: () => comissoesDoDeputado,
+  frentesDe: () => frentesDoDeputado,
   anosComVerba: () => [],
   resumoDeputado: () => ({ proposicoes: porTema.length > 0 ? 8 : 0, porTipo, verba, porTema, semTema: 0 }),
   obterMetadados: () => meta,
@@ -33,6 +37,27 @@ describe("página do deputado", () => {
   beforeEach(() => {
     verba = null;
     porTema = [];
+    comissoesDoDeputado = [];
+    frentesDoDeputado = [];
+  });
+
+  it("mostra as comissões e frentes do deputado, com o papel e link para a página geral", async () => {
+    comissoesDoDeputado = [{ comissao: { id: "ccj", sigla: "CCJ", nome: "Comissão de Constituição e Justiça" }, papel: "Presidente", suplente: false }];
+    frentesDoDeputado = [{ frente: { id: "02-2023", nome: "Frente Parlamentar de Turismo" }, papel: "Autor" }];
+    await abrir("fulano");
+    expect(screen.getByRole("heading", { name: "Comissões e frentes parlamentares" })).toBeInTheDocument();
+    const ccj = screen.getByRole("link", { name: /Comissão de Constituição e Justiça/ });
+    expect(ccj).toHaveAttribute("href", "/comissoes-e-frentes#ccj");
+    expect(ccj.closest("li")).toHaveTextContent("Presidente");
+    const frente = screen.getByRole("link", { name: /Frente Parlamentar de Turismo/ });
+    expect(frente).toHaveAttribute("href", "/comissoes-e-frentes#frente-02-2023");
+    expect(frente.closest("li")).toHaveTextContent("Autor");
+  });
+
+  it("sem comissões nem frentes, diz que não há registro", async () => {
+    await abrir("fulano");
+    expect(screen.getByText("Nenhuma comissão na composição atual.")).toBeInTheDocument();
+    expect(screen.getByText("Nenhuma frente parlamentar registrada.")).toBeInTheDocument();
   });
 
   it("mostra a recorrência de temas das proposições, com link para a lista filtrada", async () => {

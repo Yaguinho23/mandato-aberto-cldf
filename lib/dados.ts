@@ -2,13 +2,15 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { temasDe } from "./temas";
 import { TIPOS_PROPOSICAO } from "./types";
-import type { Deputado, DespesaVerba, Metadados, Proposicao, TipoProposicao } from "./types";
+import type { Comissao, Deputado, DespesaVerba, Frente, Metadados, PapelComissao, Proposicao, TipoProposicao } from "./types";
 
 export interface ConjuntoDeDados {
   deputados: Deputado[];
   proposicoes: Proposicao[];
   verba: DespesaVerba[];
   metadados: Metadados;
+  comissoes?: Comissao[];
+  frentes?: Frente[];
 }
 
 export interface ResumoVerba {
@@ -89,6 +91,30 @@ export function criarDados(c: ConjuntoDeDados) {
 
   const obterMetadados = () => c.metadados;
 
+  const comissoes = [...(c.comissoes ?? [])].sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"));
+  const frentes = [...(c.frentes ?? [])].sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"));
+  const listarComissoes = () => comissoes;
+  const listarFrentes = () => frentes;
+
+  function comissoesDe(slug: string): { comissao: Comissao; papel: PapelComissao | "Suplente"; suplente: boolean }[] {
+    const resultado: { comissao: Comissao; papel: PapelComissao | "Suplente"; suplente: boolean }[] = [];
+    for (const comissao of comissoes) {
+      const titular = comissao.membros.find((m) => m.deputadoSlug === slug);
+      if (titular) resultado.push({ comissao, papel: titular.papel, suplente: false });
+      else if (comissao.membros.some((m) => m.suplenteSlug === slug)) resultado.push({ comissao, papel: "Suplente", suplente: true });
+    }
+    return resultado;
+  }
+
+  function frentesDe(slug: string): { frente: Frente; papel: "Autor" | "Signatário" }[] {
+    const resultado: { frente: Frente; papel: "Autor" | "Signatário" }[] = [];
+    for (const frente of frentes) {
+      if (frente.autorSlug === slug) resultado.push({ frente, papel: "Autor" });
+      else if (frente.signatarios.includes(slug)) resultado.push({ frente, papel: "Signatário" });
+    }
+    return resultado;
+  }
+
   function normalizarSelecao(param: string | string[] | undefined): string[] {
     const itens = (Array.isArray(param) ? param : param === undefined ? [] : [param]).flatMap((p) => p.split(","));
     const unicos: string[] = [];
@@ -96,7 +122,7 @@ export function criarDados(c: ConjuntoDeDados) {
     return unicos.slice(0, MAXIMO_COMPARAR);
   }
 
-  return { listarDeputados, obterDeputado, proposicoesDe, listarProposicoes, resumoVerba, anosComVerba, resumoDeputado, obterMetadados, normalizarSelecao };
+  return { listarComissoes, listarFrentes, comissoesDe, frentesDe, listarDeputados, obterDeputado, proposicoesDe, listarProposicoes, resumoVerba, anosComVerba, resumoDeputado, obterMetadados, normalizarSelecao };
 }
 
 const lerJson = <T>(nome: string): T => JSON.parse(readFileSync(join(process.cwd(), "data", nome), "utf8")) as T;
@@ -108,6 +134,8 @@ function reais() {
     proposicoes: lerJson<Proposicao[]>("proposicoes.json"),
     verba: lerJson<DespesaVerba[]>("verba.json"),
     metadados: lerJson<Metadados>("metadados.json"),
+    comissoes: lerJson<Comissao[]>("comissoes.json"),
+    frentes: lerJson<Frente[]>("frentes.json"),
   });
   return padrao;
 }
@@ -120,4 +148,8 @@ export const resumoVerba: ReturnType<typeof criarDados>["resumoVerba"] = (s, a) 
 export const anosComVerba: ReturnType<typeof criarDados>["anosComVerba"] = (s) => reais().anosComVerba(s);
 export const resumoDeputado: ReturnType<typeof criarDados>["resumoDeputado"] = (s, a) => reais().resumoDeputado(s, a);
 export const obterMetadados: ReturnType<typeof criarDados>["obterMetadados"] = () => reais().obterMetadados();
+export const listarComissoes: ReturnType<typeof criarDados>["listarComissoes"] = () => reais().listarComissoes();
+export const listarFrentes: ReturnType<typeof criarDados>["listarFrentes"] = () => reais().listarFrentes();
+export const comissoesDe: ReturnType<typeof criarDados>["comissoesDe"] = (s) => reais().comissoesDe(s);
+export const frentesDe: ReturnType<typeof criarDados>["frentesDe"] = (s) => reais().frentesDe(s);
 export const normalizarSelecao: ReturnType<typeof criarDados>["normalizarSelecao"] = (p) => reais().normalizarSelecao(p);
