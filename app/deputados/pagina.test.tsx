@@ -10,6 +10,7 @@ const meta: Metadados = {
 };
 const porTipo = { PL: 0, PLC: 0, PDL: 0, PR: 0, IND: 0, MO: 0, RQ: 0, OUTRO: 0 };
 let verba: unknown;
+let porTema: { tema: string; quantidade: number }[] = [];
 
 vi.mock("next/navigation", () => ({
   notFound: () => {
@@ -21,7 +22,7 @@ vi.mock("@/lib/dados", () => ({
   obterDeputado: (s: string) => (s === "fulano" ? fulano : undefined),
   proposicoesDe: () => [],
   anosComVerba: () => [],
-  resumoDeputado: () => ({ proposicoes: 0, porTipo, verba }),
+  resumoDeputado: () => ({ proposicoes: porTema.length > 0 ? 8 : 0, porTipo, verba, porTema, semTema: 0 }),
   obterMetadados: () => meta,
 }));
 import Pagina, { generateStaticParams } from "./[slug]/page";
@@ -31,6 +32,16 @@ const abrir = async (slug: string) => render(await Pagina({ params: Promise.reso
 describe("página do deputado", () => {
   beforeEach(() => {
     verba = null;
+    porTema = [];
+  });
+
+  it("mostra a recorrência de temas das proposições, com link para a lista filtrada", async () => {
+    porTema = [{ tema: "saude", quantidade: 6 }, { tema: "mobilidade", quantidade: 2 }];
+    await abrir("fulano");
+    const saude = screen.getByRole("link", { name: /Saúde/ });
+    expect(saude).toHaveTextContent("6 proposições");
+    expect(saude.getAttribute("href")).toBe("/proposicoes?autor=fulano&ano=2026&tema=saude");
+    expect(screen.getByRole("link", { name: /Mobilidade e trânsito/ })).toHaveTextContent("2 proposições");
   });
 
   it("sem registros de verba: mostra o aviso e nunca R$ 0,00", async () => {

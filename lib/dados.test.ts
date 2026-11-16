@@ -90,6 +90,23 @@ describe("camada de dados", () => {
     expect(dados.resumoDeputado("sem-registros", 2026).verba).toBeNull();
   });
 
+  it("resumoDeputado conta os temas das proposições do ano, do mais ao menos frequente", () => {
+    const d = criarDados({
+      deputados: [dep("a", "A")],
+      proposicoes: [
+        { ...prop("1", "PL", 2026, ["a"], "2026-01-01"), ementa: "Amplia o transporte público e a segurança pública" },
+        { ...prop("2", "PL", 2026, ["a"], "2026-01-02"), ementa: "Cria linha de ônibus noturna" },
+        { ...prop("3", "PL", 2026, ["a"], "2026-01-03"), ementa: "Concede título honorário" },
+        { ...prop("4", "PL", 2025, ["a"], "2025-01-03"), ementa: "Amplia vacinação" },
+      ],
+      verba: [],
+      metadados: { geradoEm: "2026-11-16T00:00:00.000Z", fontes: [] },
+    });
+    const r = d.resumoDeputado("a", 2026);
+    expect(r.porTema).toEqual([{ tema: "mobilidade", quantidade: 2 }, { tema: "seguranca", quantidade: 1 }]);
+    expect(r.semTema).toBe(1);
+  });
+
   it("normalizarSelecao: dedup, só existentes, máximo 4", () => {
     expect(dados.normalizarSelecao("a,inexistente,a,b,c,d,e")).toEqual(["a", "b", "c", "d"]);
     expect(dados.normalizarSelecao(["a,b", "c"])).toEqual(["a", "b", "c"]);

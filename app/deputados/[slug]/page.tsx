@@ -35,7 +35,7 @@ export default async function PaginaDeputado({ params }: PageProps<"/deputados/[
         </div>
       </header>
 
-      <PainelAno anos={anos} anoInicial={2026} fonteProposicoes={<Fonte id="proposicoes" />} fonteVerba={<Fonte id="verba" />} />
+      <PainelAno slug={slug} anos={anos} anoInicial={2026} fonteProposicoes={<Fonte id="proposicoes" />} fonteVerba={<Fonte id="verba" />} />
 
       <BlocoResumo titulo="Presença">
         <p>

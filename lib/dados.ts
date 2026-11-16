@@ -74,8 +74,17 @@ export function criarDados(c: ConjuntoDeDados) {
   function resumoDeputado(slug: string, ano: number) {
     const porTipo = Object.fromEntries(TIPOS_PROPOSICAO.map((t) => [t, 0])) as Record<TipoProposicao, number>;
     const doAno = proposicoesDe(slug).filter((p) => p.ano === ano);
-    for (const p of doAno) porTipo[p.tipo]++;
-    return { proposicoes: doAno.length, porTipo, verba: resumoVerba(slug, ano) };
+    const temas = new Map<string, number>();
+    let semTema = 0;
+    for (const p of doAno) {
+      porTipo[p.tipo]++;
+      const ids = temasDe(p.ementa);
+      if (ids.length === 0) semTema++;
+      for (const t of ids) temas.set(t, (temas.get(t) ?? 0) + 1);
+    }
+    // Do tema mais frequente ao menos; empate em ordem alfabética do id.
+    const porTema = [...temas].map(([tema, quantidade]) => ({ tema, quantidade })).sort((a, b) => b.quantidade - a.quantidade || a.tema.localeCompare(b.tema));
+    return { proposicoes: doAno.length, porTipo, porTema, semTema, verba: resumoVerba(slug, ano) };
   }
 
   const obterMetadados = () => c.metadados;
