@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // /proposicoes é renderizada no servidor (20 mil itens, filtros por URL); precisa dos dados no pacote.
+  outputFileTracingIncludes: { "/proposicoes": ["./data/**/*"] },
   turbopack: {
     rules: {
       "*.css": {
