@@ -46,7 +46,7 @@ export function GraficoGastos({ porMes, porCategoria, semMes, totalCentavos }: P
       ) : null}
 
       <div>
-        <h4 className="mb-2 font-medium">Por categoria, do maior para o menor valor</h4>
+        <h3 className="mb-2 font-medium">Por categoria, do maior para o menor valor</h3>
         <ul className="space-y-2">
           {porCategoria.map((c) => (
             <li key={c.categoria} data-testid="categoria" className="text-sm">

@@ -96,6 +96,16 @@ describe("página do deputado", () => {
     expect(decodeURIComponent(href)).toContain("Fulano de Tal");
   });
 
+  it("os títulos seguem a ordem sem pular nível (acessibilidade)", async () => {
+    verba = { totalCentavos: 100, porMes: [{ mes: 2, centavos: 100 }], semMes: { lancamentos: 0, centavos: 0 }, porCategoria: [{ categoria: "Locação", centavos: 100 }] };
+    porTema = [{ tema: "saude", quantidade: 2 }];
+    comissoesDoDeputado = [{ comissao: { id: "ccj", sigla: "CCJ", nome: "Comissão X" }, papel: "Membro", suplente: false }];
+    const { container } = await abrir("fulano");
+    const niveis = [...container.querySelectorAll("h1,h2,h3,h4,h5,h6")].map((h) => Number(h.tagName[1]));
+    expect(niveis[0]).toBe(1);
+    niveis.forEach((n, i) => { if (i > 0) expect(n).toBeLessThanOrEqual(niveis[i - 1] + 1); });
+  });
+
   it("slug inexistente chama notFound()", async () => {
     await expect(abrir("ninguem")).rejects.toThrow("NEXT_NOT_FOUND");
   });

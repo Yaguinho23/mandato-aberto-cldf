@@ -40,7 +40,7 @@ export function PainelAno({ slug, anos, anoInicial, fonteProposicoes, fonteVerba
               <p className="text-sm">{tipos.map(([t, n]) => `${n} ${t}`).join(" · ")}</p>
               {dados.porTema.length > 0 ? (
                 <div className="mt-5">
-                  <h4 className="mb-2 flex items-center gap-2 font-semibold text-[var(--cor-primaria)]"><IconeEtiqueta tamanho={18} /> Temas das proposições</h4>
+                  <h3 className="mb-2 flex items-center gap-2 font-semibold text-[var(--cor-primaria)]"><IconeEtiqueta tamanho={18} /> Temas das proposições</h3>
                   <ul className="grid gap-2 sm:grid-cols-2">
                     {dados.porTema.map((t) => (
                       <li key={t.tema}>
