@@ -56,6 +56,8 @@ export interface FonteMeta {
   registros: number;
   ok: boolean;
   erro?: string;
+  /** Linhas da fonte que não puderam ser lidas (só verba). */
+  rejeitados?: number;
 }
 
 export interface Metadados {

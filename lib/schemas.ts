@@ -1,4 +1,4 @@
-﻿import { z } from "zod";
+import { z } from "zod";
 import { TIPOS_PROPOSICAO } from "./types";
 
 const LegislaturaSchema = z.literal("2023-2026");
@@ -54,6 +54,7 @@ export const FonteMetaSchema = z.object({
   registros: z.number().int().min(0),
   ok: z.boolean(),
   erro: z.string().optional(),
+  rejeitados: z.number().int().min(0).optional(),
 });
 
 export const MetadadosSchema = z.object({

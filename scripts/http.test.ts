@@ -13,7 +13,7 @@ describe("buscar", () => {
   });
 
   it("envia o User-Agent do projeto", async () => {
-    const fetchFalso = vi.fn(async () => ok());
+    const fetchFalso = vi.fn(async (_url: string | URL, _init?: RequestInit) => ok());
     const buscar = criarBuscar(fetchFalso);
     await buscar("https://a.example/x");
     const init = fetchFalso.mock.calls[0][1] as RequestInit;
@@ -24,7 +24,7 @@ describe("buscar", () => {
   });
 
   it("mantém os cabeçalhos e o corpo passados por quem chama", async () => {
-    const fetchFalso = vi.fn(async () => ok());
+    const fetchFalso = vi.fn(async (_url: string | URL, _init?: RequestInit) => ok());
     const buscar = criarBuscar(fetchFalso);
     await buscar("https://a.example/x", { method: "POST", body: "{}", headers: { "Content-Type": "application/json" } });
     const init = fetchFalso.mock.calls[0][1] as RequestInit;
