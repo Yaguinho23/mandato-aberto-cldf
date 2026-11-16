@@ -21,10 +21,10 @@ export default async function PaginaDeputado({ params }: PageProps<"/deputados/[
 
   return (
     <div className="space-y-8">
-      <header className="flex items-center gap-4">
+      <header className="cartao flex items-center gap-4 p-5">
         {deputado.fotoUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={deputado.fotoUrl} alt={`Foto de ${deputado.nome}`} width={96} height={96} className="h-24 w-24 rounded-full object-cover" />
+          <img src={deputado.fotoUrl} alt={`Foto de ${deputado.nome}`} width={96} height={96} className="h-24 w-24 rounded-full object-cover ring-4 ring-[var(--cor-detalhe)]" />
         ) : null}
         <div>
           <h1 className="text-3xl font-bold text-[var(--cor-primaria)]">{deputado.nome}</h1>

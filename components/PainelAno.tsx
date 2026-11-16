@@ -22,7 +22,7 @@ export function PainelAno({ anos, anoInicial, fonteProposicoes, fonteVerba }: { 
     <div className="space-y-4">
       <div>
         <label htmlFor="ano" className="mr-2 text-sm font-medium">Ano</label>
-        <select id="ano" value={ano} onChange={(e) => setAno(Number(e.target.value))} className="rounded-lg border border-[var(--cor-borda)] bg-white px-2 py-1">
+        <select id="ano" value={ano} onChange={(e) => setAno(Number(e.target.value))} className="campo w-auto">
           {anos.map((a) => <option key={a.ano} value={a.ano}>{a.ano}</option>)}
         </select>
       </div>

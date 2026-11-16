@@ -9,7 +9,7 @@ export interface FiltrosAtuais {
   tema?: string;
 }
 
-const campo = "w-full rounded-lg border border-[var(--cor-borda)] bg-white px-2 py-1";
+const campo = "campo";
 
 export function FiltrosProposicoes({ deputados, anos, atual }: { deputados: { slug: string; nome: string }[]; anos: number[]; atual: FiltrosAtuais }) {
   return (
@@ -42,7 +42,7 @@ export function FiltrosProposicoes({ deputados, anos, atual }: { deputados: { sl
           {TEMAS.map((t) => <option key={t.id} value={t.id}>{t.nome}</option>)}
         </select>
       </div>
-      <button type="submit" className="rounded-full bg-[var(--cor-acao)] px-5 py-2 font-medium text-white">Filtrar</button>
+      <button type="submit" className="botao">Filtrar</button>
     </form>
   );
 }

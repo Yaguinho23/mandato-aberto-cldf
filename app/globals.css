@@ -24,3 +24,62 @@ body {
   color: var(--cor-texto);
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
+
+html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
+body { line-height: 1.6; }
+
+/* Foco visível em tudo que é interativo (WCAG 2.4.7) */
+:where(a, button, input, select, summary):focus-visible {
+  outline: 3px solid var(--cor-detalhe);
+  outline-offset: 2px;
+  border-radius: 0.375rem;
+}
+
+/* Fundo da abertura: manchas suaves em degradê, como no site Mandato Aberto */
+.fundo-hero {
+  background:
+    radial-gradient(40rem 22rem at 8% 0%, rgb(242 183 5 / 0.14), transparent 65%),
+    radial-gradient(44rem 26rem at 95% 10%, rgb(11 37 69 / 0.10), transparent 65%),
+    linear-gradient(180deg, #f6f9fc 0%, #ffffff 100%);
+}
+
+.titulo-destaque {
+  background: linear-gradient(90deg, #0b2545 0%, #1d5fa8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.cartao {
+  background: #fff;
+  border: 1px solid var(--cor-borda);
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 2px rgb(11 37 69 / 0.05), 0 4px 14px rgb(11 37 69 / 0.04);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+a.cartao:hover { border-color: var(--cor-primaria); box-shadow: 0 6px 20px rgb(11 37 69 / 0.12); transform: translateY(-2px); }
+
+.botao, .botao-contorno {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+  min-height: 2.75rem; padding: 0.5rem 1.5rem; border-radius: 9999px; font-weight: 600;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  cursor: pointer;
+}
+.botao { background: var(--cor-acao); color: var(--cor-texto-sobre-acao); box-shadow: 0 2px 8px rgb(11 37 69 / 0.25); }
+.botao:hover { background: #123a6b; }
+.botao-contorno { background: #fff; color: var(--cor-primaria); border: 1px solid var(--cor-borda); }
+.botao-contorno:hover { border-color: var(--cor-primaria); }
+
+.campo { min-height: 2.75rem; border: 1px solid var(--cor-borda); border-radius: 0.5rem; background: #fff; padding: 0.5rem 0.75rem; width: 100%; }
+.campo:hover { border-color: var(--cor-primaria); }
+
+.selo {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  border: 1px solid var(--cor-borda); background: #fff; border-radius: 9999px;
+  padding: 0.25rem 0.85rem; font-size: 0.875rem; font-weight: 500; color: var(--cor-primaria);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition: none !important; animation: none !important; transform: none !important; }
+}

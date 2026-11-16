@@ -1,4 +1,4 @@
-const campo = "w-full rounded-lg border border-[var(--cor-borda)] bg-white px-2 py-1";
+const campo = "campo";
 
 export function SeletorDeputados({ deputados, escolhidos, anos, ano }: { deputados: { slug: string; nome: string }[]; escolhidos: string[]; anos: number[]; ano: number }) {
   return (
@@ -18,7 +18,7 @@ export function SeletorDeputados({ deputados, escolhidos, anos, ano }: { deputad
           {anos.map((a) => <option key={a} value={a}>{a}</option>)}
         </select>
       </div>
-      <button type="submit" className="rounded-full bg-[var(--cor-acao)] px-5 py-2 font-medium text-white sm:col-span-5 sm:justify-self-start">Comparar</button>
+      <button type="submit" className="botao sm:col-span-5 sm:justify-self-start">Comparar</button>
     </form>
   );
 }

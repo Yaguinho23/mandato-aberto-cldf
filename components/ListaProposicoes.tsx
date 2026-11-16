@@ -14,7 +14,7 @@ export function ListaProposicoes({ itens, limite, vazio = "Nenhuma proposição 
         const reconhecidos = p.autores.map((s) => obterDeputado(s)).filter((d) => d !== undefined);
         const partes = p.autoresTexto.split(",").filter((s) => s.trim() !== "").length;
         return (
-          <li key={p.id} className="rounded-lg border border-[var(--cor-borda)] bg-white p-3">
+          <li key={p.id} className="cartao p-4">
             <p className="font-medium text-[var(--cor-primaria)]">
               <Termo id={p.tipo}>{p.tipo}</Termo> {p.numero}/{p.ano}
             </p>

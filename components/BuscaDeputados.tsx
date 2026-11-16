@@ -19,7 +19,7 @@ export function BuscaDeputados({ deputados }: { deputados: Deputado[] }) {
         type="search"
         value={busca}
         onChange={(e) => setBusca(e.target.value)}
-        className="mt-1 w-full rounded-lg border border-[var(--cor-borda)] bg-white px-3 py-2 sm:max-w-sm"
+        className="campo mt-1 sm:max-w-sm"
       />
       <p className="mt-2 text-sm text-[var(--cor-texto-suave)]" aria-live="polite">
         {visiveis.length} de {deputados.length} deputados, em ordem alfabética
