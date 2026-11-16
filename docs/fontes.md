@@ -91,13 +91,31 @@ Todas as requisições usam `User-Agent: MandatoAbertoCLDF/1.0 (+https://mandato
 ### Problemas de qualidade encontrados
 
 1. **Nome do deputado sem padrão.** Aparece como nome parlamentar com prefixo (`Deputado Hermeto`), sem prefixo (`Martins Machado`), em maiúsculas (`CHICO VIGILANTE`), com `Dep.` (`Dep. PEPA`) ou como nome civil completo (`Jane Klébia do Nascimento da Silva`, `Bernardo Rogério Mata de Araújo Júnior`). Resolvido com a lista de `aliases` em `data/curado/deputados.json`; casamento sempre exato.
-2. **Linhas sem nome de deputado:** 9 em 2023, 14 em 2026. São rejeitadas e contadas.
+2. **Linhas sem nome de deputado:** 9 em 2023. São rejeitadas e contadas.
 3. **Valores com vírgula como separador de milhar:** `R$ 5,500,00` (5 linhas em 2026). Lidos como 5.500,00, porque os dois últimos dígitos depois do último separador são centavos.
 4. **Linha sem valor** (1 em 2026): rejeitada, nunca vira zero.
-5. **Datas ambíguas em 2025 e 2026.** O arquivo de 2026 mistura `dia/mês` e `mês/dia` (há `1/20/2026` e há `28/01/2026`), e 58 das 277 linhas não têm data. Em 112 linhas os dois números são ≤ 12 e não dá para saber qual é o mês. No de 2025, parte das datas é texto `mês/dia/ano` e parte é data do Excel, sinal de conversão automática com dia e mês trocados. **Decisão:** o mês só é gravado quando é inequívoco (data ISO, data do Excel de 2024, ou data com um dos números > 12). Nos demais casos `mes` fica `null`: o lançamento entra no total do ano e por categoria, mas não no gráfico mensal, e a página diz quantos lançamentos ficaram sem mês.
-6. **Categoria é texto livre de cada gabinete:** `Locação de veículo`, `LOCAÇÃO DE VEICULOS`, `Aluguel de veículo`, `II - Locação de bens móveis...`; 21 linhas de 2026 sem categoria. Ver decisão na Task 5.
+5. **Datas ambíguas em 2025 e 2026.** O arquivo de 2026 mistura `dia/mês` e `mês/dia` (há `1/20/2026` e há `28/01/2026`) e tem linhas sem data. Quando os dois números são ≤ 12 e diferentes, não dá para saber qual é o mês. No de 2025, parte das datas é texto `mês/dia/ano` e parte é data do Excel, sinal de conversão automática com dia e mês trocados. **Decisão:** o mês só é gravado quando é inequívoco (data ISO, data do Excel de 2024, ou data com um dos números > 12). Nos demais casos `mes` fica `null`: o lançamento entra no total do ano e por categoria, mas não no gráfico mensal, e a página diz quantos lançamentos ficaram sem mês.
+6. **Categoria é texto livre de cada gabinete:** `Locação de veículo`, `LOCAÇÃO DE VEICULOS`, `Aluguel de veículo`, `II - Locação de bens móveis...`. **Decisão:** o texto da fonte é mantido; só se tiram espaços sobrando e o numeral romano do início (`VIII - `). Categoria vazia vira `Sem classificação na fonte`. Nada é reagrupado por semelhança.
 7. **Nem todos os deputados aparecem.** 2023 tem 21 nomes distintos; 2026 (até agosto) tem 9. Quem não aparece é mostrado como "Nenhum registro publicado no período".
 8. **Sem valores negativos** nas amostras, mas o código aceita (glosas e estornos).
+9. **Campos com quebra de linha dentro de aspas** (2024 e 2026): o leitor de CSV respeita aspas; contar linhas de texto superestima o número de registros.
+10. **Números do Excel com ruído** (`293.79000000000002`): lidos como o mesmo número na forma curta (`293.79`).
+11. **Bloco deslocado em 2025.** As 150 linhas de um gabinete vieram sem a coluna `CPF`: recibo, data, valor e classificação estão uma coluna antes do lugar. O leitor reconhece o caso (texto na coluna de valor, valor e data nas vizinhas da esquerda) e lê da coluna certa. 7 dessas linhas não têm data e continuam rejeitadas.
+
+### Conferência da coleta de verba (16/11/2026)
+
+| Ano | Lançamentos | Deputados com registro | Soma | Sem mês confiável |
+|---|---|---|---|---|
+| 2023 | 1.465 | 19 | R$ 1.958.442,42 | 55 |
+| 2024 | 335 | 4 | R$ 593.859,12 | 8 |
+| 2025 | 1.078 | 11 | R$ 1.749.824,39 | 969 |
+| 2026 (até agosto) | 261 | 10 | R$ 805.484,35 | 142 |
+
+Linhas rejeitadas: 17 (9 sem nome em 2023, 7 do bloco deslocado de 2025 sem data, 1 sem valor em 2026).
+
+**Os dados abertos são incompletos em relação ao painel oficial.** O painel de verba indenizatória da CLDF (Power BI, em `cl.df.gov.br/web/portal-transparencia/verbas-indenizatorias`) mostra, para agosto de 2026, gastos de deputados que não aparecem no arquivo de dados abertos de 2026 (por exemplo João Cardoso, Pepa, Thiago Manzoni e Daniel Donizet). Para quem aparece nos dois, os valores batem linha a linha (Chico Vigilante: locação de veículo de R$ 5.500,00 por mês nos dois), mas o arquivo aberto para de cobrir antes (Chico Vigilante só até abril de 2026).
+
+A conferência exata do total de um deputado em um mês, pedida no plano, **não foi concluída**: o painel não exporta os dados e as datas de 2025 e 2026 no arquivo aberto não permitem fechar um mês. Consequência para o site: a soma é sempre apresentada como "comprovantes publicados em dados abertos", nunca como o total de verba usada, e cada bloco aponta para o painel oficial.
 
 ## 3. Relação nominal de deputados e servidores (CKAN)
 
