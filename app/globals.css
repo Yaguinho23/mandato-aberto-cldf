@@ -1,17 +1,17 @@
 @import "tailwindcss";
 
-/* Paleta B: verde escuro em destaque, azul escuro nas ações, amarelo-ouro nos detalhes. */
+/* Paleta: azul escuro em destaque, amarelo nos detalhes. */
 :root {
-  --cor-primaria: #0f4d33;
+  --cor-primaria: #0b2545;
   --cor-acao: #0b2545;
   --cor-texto-sobre-acao: #ffffff;
-  --cor-detalhe: #f5c518;
+  --cor-detalhe: #f2b705;
   --cor-texto-sobre-detalhe: #0b2545;
   --cor-fundo: #ffffff;
-  --cor-fundo-suave: #edf5f0;
+  --cor-fundo-suave: #eef3f8;
   --cor-texto: #14213d;
   --cor-texto-suave: #4a5568;
-  --cor-borda: #cfe0d6;
+  --cor-borda: #d5dde6;
 }
 
 @theme inline {

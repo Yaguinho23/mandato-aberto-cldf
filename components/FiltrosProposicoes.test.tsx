@@ -13,11 +13,14 @@ describe("FiltrosProposicoes", () => {
     expect(screen.getByLabelText("Tipo")).toHaveAttribute("name", "tipo");
     expect(screen.getByLabelText("Ano")).toHaveAttribute("name", "ano");
     expect(screen.getByLabelText("Autor")).toHaveAttribute("name", "autor");
+    expect(screen.getByLabelText("Tema")).toHaveAttribute("name", "tema");
+    expect(screen.getByRole("option", { name: "Saúde" })).toBeInTheDocument();
   });
   it("mostra os filtros atuais selecionados", () => {
-    render(<FiltrosProposicoes deputados={deputados} anos={[2025, 2026]} atual={{ tipo: "PL", ano: 2026, autor: "zeca" }} />);
+    render(<FiltrosProposicoes deputados={deputados} anos={[2025, 2026]} atual={{ tipo: "PL", ano: 2026, autor: "zeca", tema: "saude" }} />);
     expect(screen.getByLabelText("Tipo")).toHaveValue("PL");
     expect(screen.getByLabelText("Ano")).toHaveValue("2026");
     expect(screen.getByLabelText("Autor")).toHaveValue("zeca");
+    expect(screen.getByLabelText("Tema")).toHaveValue("saude");
   });
 });

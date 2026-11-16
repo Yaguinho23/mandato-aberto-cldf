@@ -5,6 +5,7 @@ import { ListaProposicoes } from "@/components/ListaProposicoes";
 import { Termo } from "@/components/Termo";
 import { listarDeputados, listarProposicoes } from "@/lib/dados";
 import { paginar } from "@/lib/glossario";
+import { TEMAS } from "@/lib/temas";
 import { TIPOS_PROPOSICAO, type TipoProposicao } from "@/lib/types";
 
 const ANOS = [2023, 2024, 2025, 2026];
@@ -20,6 +21,7 @@ export default async function Proposicoes({ searchParams }: PageProps<"/proposic
     tipo: TIPOS_PROPOSICAO.includes(tipoBruto as TipoProposicao) ? (tipoBruto as TipoProposicao) : undefined,
     ano: ANOS.includes(anoBruto) ? anoBruto : undefined,
     autor: deputados.some((d) => d.slug === autorBruto) ? autorBruto : undefined,
+    tema: TEMAS.some((t) => t.id === primeiro(q.tema)) ? primeiro(q.tema) : undefined,
   };
   const todas = listarProposicoes(filtros);
   const pag = paginar(todas, Number(primeiro(q.pagina)));
@@ -29,6 +31,7 @@ export default async function Proposicoes({ searchParams }: PageProps<"/proposic
     if (filtros.tipo) p.set("tipo", filtros.tipo);
     if (filtros.ano) p.set("ano", String(filtros.ano));
     if (filtros.autor) p.set("autor", filtros.autor);
+    if (filtros.tema) p.set("tema", filtros.tema);
     p.set("pagina", String(pagina));
     return `/proposicoes?${p.toString()}`;
   };
@@ -40,6 +43,9 @@ export default async function Proposicoes({ searchParams }: PageProps<"/proposic
         Cada item mostra a <Termo id="ementa">ementa</Termo> oficial e o tipo da proposição; toque no tipo para ver o que significa.
       </p>
       <FiltrosProposicoes deputados={deputados.map((d) => ({ slug: d.slug, nome: d.nome }))} anos={ANOS} atual={filtros} />
+      <p className="text-sm text-[var(--cor-texto-suave)]">
+        Os temas são identificados automaticamente por palavras na ementa. Uma proposição pode ter mais de um tema ou nenhum, então o filtro pode não encontrar todas as proposições de um assunto.
+      </p>
       <p className="text-sm" aria-live="polite">
         {todas.length.toLocaleString("pt-BR")} proposições · página {pag.pagina} de {pag.totalPaginas}
       </p>

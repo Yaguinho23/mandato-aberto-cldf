@@ -71,6 +71,16 @@ describe("camada de dados", () => {
     expect(dados.listarProposicoes().length).toBe(4);
   });
 
+  it("listarProposicoes filtra por tema pela ementa", () => {
+    const comTema = criarDados({
+      deputados: [dep("a", "A")],
+      proposicoes: [{ ...prop("1", "PL", 2026, ["a"], "2026-01-01"), ementa: "Amplia o transporte público" }, { ...prop("2", "PL", 2026, ["a"], "2026-01-02"), ementa: "Concede título honorário" }],
+      verba: [],
+      metadados: { geradoEm: "2026-11-16T00:00:00.000Z", fontes: [] },
+    });
+    expect(comTema.listarProposicoes({ tema: "mobilidade" }).map((p) => p.id)).toEqual(["1"]);
+  });
+
   it("resumoDeputado conta proposições do ano por tipo", () => {
     const r = dados.resumoDeputado("fulano", 2026);
     expect(r.proposicoes).toBe(1);

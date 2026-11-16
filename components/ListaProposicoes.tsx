@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { obterDeputado } from "@/lib/dados";
 import { formatarData } from "@/lib/formato";
+import { nomeDoTema, temasDe } from "@/lib/temas";
 import type { Proposicao } from "@/lib/types";
 import { Termo } from "./Termo";
 
@@ -18,6 +19,13 @@ export function ListaProposicoes({ itens, limite, vazio = "Nenhuma proposição 
               <Termo id={p.tipo}>{p.tipo}</Termo> {p.numero}/{p.ano}
             </p>
             <p className="mt-1 text-sm">{p.ementa}</p>
+            {temasDe(p.ementa).length > 0 ? (
+              <p className="mt-1 flex flex-wrap gap-1 text-xs">
+                {temasDe(p.ementa).map((t) => (
+                  <span key={t} className="rounded-full bg-[var(--cor-fundo-suave)] px-2 py-0.5">{nomeDoTema(t)}</span>
+                ))}
+              </p>
+            ) : null}
             <p className="mt-1 text-xs">
               Autoria:{" "}
               {reconhecidos.map((d, i) => (

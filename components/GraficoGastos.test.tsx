@@ -19,6 +19,13 @@ describe("GraficoGastos", () => {
     expect(within(tabela).getByText(/R\$\s*25,00/)).toBeInTheDocument();
   });
 
+  it("as barras mensais são proporcionais ao valor", () => {
+    render(<GraficoGastos {...props} />);
+    const [a, b] = screen.getAllByTestId("barra-mes").map((e) => parseFloat((e as HTMLElement).style.height));
+    expect(a).toBeGreaterThan(b);
+    expect(a / b).toBeCloseTo(6000 / 2500, 0);
+  });
+
   it("lista categorias do maior para o menor valor", () => {
     render(<GraficoGastos {...props} />);
     const itens = screen.getAllByTestId("categoria").map((e) => e.textContent);

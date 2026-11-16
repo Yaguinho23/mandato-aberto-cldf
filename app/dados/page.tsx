@@ -59,6 +59,7 @@ export default function PaginaDados() {
           <li>
             Hoje, {semAutor.toLocaleString("pt-BR")} de {proposicoes.length.toLocaleString("pt-BR")} proposições ({pct}%) não têm autor reconhecido e aparecem com o texto original da fonte.
           </li>
+          <li>Temas das proposições (mobilidade, saúde, segurança etc.) são atribuídos por palavras-chave encontradas na ementa, com regras fixas e públicas, sem inteligência artificial. Uma proposição pode ter vários temas ou nenhum.</li>
           <li>Valores de verba são guardados em centavos inteiros, exatamente como publicados. Estornos aparecem como valores negativos e entram na soma.</li>
           <li>
             Os arquivos de verba indenizatória em dados abertos podem estar incompletos em relação ao painel que a CLDF publica. Por isso mostramos a soma como “comprovantes publicados em dados abertos”, e não como total gasto.

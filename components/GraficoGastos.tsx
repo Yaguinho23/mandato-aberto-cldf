@@ -14,10 +14,10 @@ export function GraficoGastos({ porMes, porCategoria, semMes, totalCentavos }: P
     <div className="space-y-6">
       {mensalConfiavel ? (
         <div>
-          <div className="flex h-32 items-end gap-2" aria-hidden>
+          <div className="flex items-end gap-2" aria-hidden>
             {porMes.map((m) => (
-              <div key={m.mes} className="flex flex-1 flex-col items-center justify-end" style={{ height: "100%" }}>
-                <div className="w-full bg-[var(--cor-primaria)]" style={{ height: `${(Math.abs(m.centavos) / maximo) * 100}%` }} />
+              <div key={m.mes} className="flex flex-1 flex-col items-center justify-end">
+                <div data-testid="barra-mes" className="w-full rounded-t bg-[var(--cor-primaria)]" style={{ height: `${Math.max(2, Math.round((Math.abs(m.centavos) / maximo) * 96))}px` }} />
                 <span className="mt-1 text-xs">{nomeMes(m.mes).slice(0, 3)}</span>
               </div>
             ))}

@@ -1,5 +1,6 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
+import { temasDe } from "./temas";
 import { TIPOS_PROPOSICAO } from "./types";
 import type { Deputado, DespesaVerba, Metadados, Proposicao, TipoProposicao } from "./types";
 
@@ -35,9 +36,13 @@ export function criarDados(c: ConjuntoDeDados) {
 
   const proposicoesDe = (slug: string) => proposicoes.filter((p) => p.autores.includes(slug));
 
-  function listarProposicoes(f: { tipo?: TipoProposicao; ano?: number; autor?: string } = {}): Proposicao[] {
+  function listarProposicoes(f: { tipo?: TipoProposicao; ano?: number; autor?: string; tema?: string } = {}): Proposicao[] {
     return proposicoes.filter(
-      (p) => (f.tipo === undefined || p.tipo === f.tipo) && (f.ano === undefined || p.ano === f.ano) && (f.autor === undefined || p.autores.includes(f.autor)),
+      (p) =>
+        (f.tipo === undefined || p.tipo === f.tipo) &&
+        (f.ano === undefined || p.ano === f.ano) &&
+        (f.autor === undefined || p.autores.includes(f.autor)) &&
+        (f.tema === undefined || temasDe(p.ementa).includes(f.tema)),
     );
   }
 
