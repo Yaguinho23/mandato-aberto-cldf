@@ -1,4 +1,4 @@
-import { z } from "zod";
+﻿import { z } from "zod";
 import { TIPOS_PROPOSICAO } from "./types";
 
 const LegislaturaSchema = z.literal("2023-2026");
@@ -24,7 +24,7 @@ export const ProposicaoSchema = z.object({
   id: z.string().min(1),
   tipo: z.enum(TIPOS_PROPOSICAO),
   numero: z.string(),
-  ano: z.number().int().min(2023).max(2100),
+  ano: z.number().int().min(1990).max(2100),
   ementa: z.string(),
   situacao: z.string().nullable(),
   dataApresentacao: DataSchema.nullable(),

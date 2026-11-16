@@ -133,3 +133,10 @@ Também existe no portal de dados abertos um conjunto `emendas-parlamentares`, n
 - A verba separa por deputado? **Sim**, por comprovante.
 
 O escopo segue como planejado, com as ressalvas dos itens 5 e 6 da seção de verba.
+
+## 7. Conferência da coleta de proposições (16/11/2026)
+
+Primeira coleta real, 2023 a 2026: **19.910 proposições** (2023: 6.903; 2024: 4.931; 2025: 4.921; 2026: 3.155).
+Por tipo: IND 11.237, RQ 3.130, PL 2.527, MO 2.213, PDL 505, PLC 117, PR 92, OUTRO 89.
+
+**Sem autor reconhecido: 647 (3,2%)**, abaixo do limite de 15% do plano. São autores que não são deputados da legislatura: Poder Executivo (455), comissões, Mesa Diretora (34), Defensoria Pública (14), Tribunal de Contas (13), uma Sugestão Legislativa, um registro sem autoria e um de "Deputado Rafael Prudente", que não está entre os 24 em exercício. Nenhum alias precisou ser acrescentado.
