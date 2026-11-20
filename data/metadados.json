@@ -1,11 +1,11 @@
 {
-  "geradoEm": "2026-11-19T10:24:40.196Z",
+  "geradoEm": "2026-11-20T10:24:00.906Z",
   "fontes": [
     {
       "id": "deputados",
       "nome": "Deputados da legislatura 2023–2026 (site da CLDF)",
       "url": "https://www.cl.df.gov.br/deputados-2023-2026",
-      "coletadoEm": "2026-11-19T10:24:40.196Z",
+      "coletadoEm": "2026-11-20T10:24:00.906Z",
       "registros": 24,
       "ok": true
     },
