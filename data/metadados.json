@@ -1,11 +1,11 @@
 {
-  "geradoEm": "2026-11-27T10:25:23.644Z",
+  "geradoEm": "2026-11-28T10:10:02.843Z",
   "fontes": [
     {
       "id": "deputados",
       "nome": "Deputados da legislatura 2023–2026 (site da CLDF)",
       "url": "https://www.cl.df.gov.br/deputados-2023-2026",
-      "coletadoEm": "2026-11-27T10:25:23.644Z",
+      "coletadoEm": "2026-11-28T10:10:02.843Z",
       "registros": 24,
       "ok": true
     },
@@ -13,38 +13,34 @@
       "id": "proposicoes",
       "nome": "Proposições (sistema PLe da CLDF)",
       "url": "https://ple.cl.df.gov.br/",
-      "coletadoEm": "2026-11-16T20:35:26.881Z",
-      "registros": 19910,
-      "ok": false,
-      "erro": "Falha de rede em https://ple.cl.df.gov.br/pleservico/api/public/proposicao/filter?page=0&size=1000&sort=id,asc: fetch failed"
+      "coletadoEm": "2026-11-28T10:10:02.843Z",
+      "registros": 19988,
+      "ok": true
     },
     {
       "id": "verba",
       "nome": "Verbas indenizatórias (dados abertos da CLDF)",
       "url": "https://dados.cl.df.gov.br/dataset/verbas-indenizatorias",
-      "coletadoEm": "2026-11-16T20:35:26.881Z",
-      "registros": 3139,
-      "ok": false,
-      "erro": "Falha de rede em https://dados.cl.df.gov.br/api/3/action/package_show?id=verbas-indenizatorias: fetch failed",
+      "coletadoEm": "2026-11-28T10:10:02.843Z",
+      "registros": 3166,
+      "ok": true,
       "rejeitados": 17
     },
     {
       "id": "comissoes",
       "nome": "Comissões permanentes (site da CLDF)",
       "url": "https://www.cl.df.gov.br/comissoes-permanentes",
-      "coletadoEm": "2026-11-16T20:35:26.881Z",
+      "coletadoEm": "2026-11-28T10:10:02.843Z",
       "registros": 15,
-      "ok": false,
-      "erro": "Falha de rede em https://www.cl.df.gov.br/comissoes-permanentes: fetch failed"
+      "ok": true
     },
     {
       "id": "frentes",
       "nome": "Frentes parlamentares (site da CLDF)",
       "url": "https://www.cl.df.gov.br/frentes-parlamentares",
-      "coletadoEm": "2026-11-16T20:35:26.881Z",
+      "coletadoEm": "2026-11-28T10:10:02.843Z",
       "registros": 154,
-      "ok": false,
-      "erro": "Falha de rede em https://www.cl.df.gov.br/frentes-parlamentares: fetch failed"
+      "ok": true
     }
   ]
 }
